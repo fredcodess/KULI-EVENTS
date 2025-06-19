@@ -1,21 +1,37 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import React, { useState } from "react";
 
 const BookingFormPage = () => {
-  const [formData, setFormData] = useState({
-    fullname: "",
-    email: "",
-    phone: "",
-    instagram: "",
-    eventType: "",
-    serviceType: "",
-    otherService: "",
-    budget: "",
-  });
+  const [selectedService, setSelectedService] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    formData.append("access_key", import.meta.env.VITE_WEB3FORM_ACCESS_KEY);
+
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
+
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: json,
+    }).then((res) => res.json());
+
+    if (res.success) {
+      Swal.fire({
+        title: "Success",
+        text: "Message Sent",
+        icon: "success",
+      });
+      event.target.reset();
+      setSelectedService("");
+    }
   };
 
   const formVariant = {
@@ -40,156 +56,136 @@ const BookingFormPage = () => {
       initial="hidden"
       animate="visible"
     >
-      <h2 className="text-3xl font-bold text-accent mb-6">Book Your Event</h2>
+      <form onSubmit={onSubmit}>
+        <h2 className="text-3xl font-bold text-accent mb-6">Book Your Event</h2>
 
-      <div>
-        <label className="block text-sm font-semibold text-accent mb-1">
-          Full Name
-        </label>
-        <input
-          type="text"
-          name="fullname"
-          value={formData.fullname}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-accent mb-1">
-          Email <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="email"
-          name="email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-semibold text-accent mb-1">
-          Contact Number <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="tel"
-          name="phone"
-          required
-          value={formData.phone}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-accent mb-1">
-          Instagram Handle
-        </label>
-        <input
-          type="text"
-          name="instagram"
-          value={formData.instagram}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-
-      <div>
-        <p className="font-semibold text-accent mb-3">
-          What is the event? <span className="text-red-500">*</span>
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            "Birthday",
-            "Bridal Shower",
-            "Corporate Event",
-            "Baby Shower",
-            "Proposal",
-          ].map((event, i) => (
-            <label key={i} className="flex items-center gap-2 text-accent">
-              <input
-                type="radio"
-                name="eventType"
-                required
-                value={event}
-                checked={formData.eventType === event}
-                onChange={handleChange}
-              />
-              {event}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <label className="block font-semibold text-accent mb-1">
-          Choose your service <span className="text-red-500">*</span>
-        </label>
-        <select
-          name="serviceType"
-          required
-          value={formData.serviceType}
-          onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          <option value="" disabled>
-            Select service type
-          </option>
-          {services.map((service, i) => (
-            <option key={i} value={service}>
-              {service}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {formData.serviceType === "Other" && (
         <div>
           <label className="block text-sm font-semibold text-accent mb-1">
-            Please specify your service
+            Full Name
           </label>
-          <textarea
-            name="otherService"
-            value={formData.otherService}
-            onChange={handleChange}
-            rows={4}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+          <input
+            type="text"
+            name="fullname"
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
-      )}
 
-      <div>
-        <p className="font-semibold text-accent mb-3">
-          Budget <span className="text-red-500">*</span>
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-          {["£200 - £250", "£250 - £300", "£300 - £500", "£500+"].map(
-            (budget, i) => (
-              <label key={i} className="flex items-center gap-2 text-accent">
-                <input
-                  type="radio"
-                  name="budget"
-                  required
-                  value={budget}
-                  checked={formData.budget === budget}
-                  onChange={handleChange}
-                />
-                {budget}
-              </label>
-            )
-          )}
+        <div>
+          <label className="block text-sm font-semibold text-accent mb-1">
+            Email <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
         </div>
-      </div>
 
-      <div>
-        <button
-          type="submit"
-          className="bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-secondary hover:text-accent transition-all duration-300"
-        >
-          Submit Booking
-        </button>
-      </div>
+        <div>
+          <label className="block text-sm font-semibold text-accent mb-1">
+            Contact Number <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            required
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-accent mb-1">
+            Instagram Handle
+          </label>
+          <input
+            type="text"
+            name="instagram"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div>
+          <p className="font-semibold text-accent mb-3">
+            What is the event? <span className="text-red-500">*</span>
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              "Birthday",
+              "Bridal Shower",
+              "Corporate Event",
+              "Baby Shower",
+              "Proposal",
+            ].map((event, i) => (
+              <label key={i} className="flex items-center gap-2 text-accent">
+                <input type="radio" name="eventType" value={event} required />
+                {event}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block font-semibold text-accent mb-1">
+            Choose your service <span className="text-red-500">*</span>
+          </label>
+          <select
+            name="serviceType"
+            required
+            value={selectedService}
+            onChange={(e) => setSelectedService(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="" disabled>
+              Select service type
+            </option>
+            {services.map((service, i) => (
+              <option key={i} value={service}>
+                {service}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {selectedService === "Other" && (
+          <div>
+            <label className="block text-sm font-semibold text-accent mb-1">
+              Please specify your service
+            </label>
+            <textarea
+              name="otherService"
+              rows={4}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+            />
+          </div>
+        )}
+
+        <div>
+          <p className="font-semibold text-accent mb-3">
+            Budget <span className="text-red-500">*</span>
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {["£200 - £250", "£250 - £300", "£300 - £500", "£500+"].map(
+              (budget, i) => (
+                <label key={i} className="flex items-center gap-2 text-accent">
+                  <input type="radio" name="budget" value={budget} required />
+                  {budget}
+                </label>
+              )
+            )}
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            className="bg-primary text-white font-semibold px-8 py-3 rounded-lg hover:bg-secondary hover:text-accent transition-all duration-300 mt-4"
+          >
+            Submit Booking
+          </button>
+        </div>
+      </form>
     </motion.div>
   );
 };

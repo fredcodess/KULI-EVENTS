@@ -32,7 +32,7 @@ export default function MobMenu({ Menus }) {
       </button>
 
       <motion.div
-        className="fixed left-0 right-0 top-16 overflow-y-auto h-full bg- backdrop-blur text-accent p-6 pb-20"
+        className="fixed left-0 right-0 top-16 overflow-y-auto h-full bg-secondary text-accent p-6 pb-20"
         initial={{ x: "-100%" }}
         animate={{ x: isOpen ? "0%" : "-100%" }}
         transition={{ type: "spring", stiffness: 300 }}

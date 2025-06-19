@@ -5,8 +5,6 @@ import { BsFillBalloonFill } from "react-icons/bs";
 const ContactUsPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      <h2 className="text-4xl font-extrabold text-accent mb-12">Contact Us</h2>
-
       <div className="flex flex-col lg:flex-row gap-22">
         <div className="flex-1">
           <BookingFormPage />
@@ -60,7 +58,7 @@ const ContactUsPage = () => {
           </div>
 
           <div>
-            <SocialLinks />
+            <SocialLinks size={60} />
           </div>
         </div>
       </div>

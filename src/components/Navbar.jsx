@@ -2,28 +2,40 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Menus from "../utils";
 import DesktopMenu from "../layouts/DesktopMenu";
-import MobMenu from "../layouts//MobMenu";
+import MobMenu from "../layouts/MobMenu";
 import SocialLinks from "./SocialLinks";
 
 const Navbar = () => {
-  return (
-    <header className="fixed w-full top-0 z-50 bg-secondary shadow-lg">
-      <nav className="px-6">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-3">
-            <img src="/logo.png" alt="Logo" className="h-30 w-40" />
-          </Link>
+  const leftMenus = Menus.slice(0, 2);
+  const rightMenus = Menus.slice(2);
 
-          <ul className="hidden lg:flex gap-4 items-center">
-            {Menus.map((menu) => (
+  return (
+    <header className="fixed w-full top-0 z-50 bg-secondary shadow-md">
+      <nav className="px-6">
+        <div className="container mx-auto flex items-center justify-between py-4">
+          <div className="hidden lg:flex basis-1/3 justify-end gap-6 items-center">
+            {leftMenus.map((menu) => (
               <DesktopMenu key={menu.name} menu={menu} />
             ))}
-            <li>
-              <SocialLinks />
-            </li>
-          </ul>
-
-          <MobMenu Menus={Menus} />
+          </div>
+          <div className="flex justify-center basis-auto">
+            <Link to="/" className="flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-24 w-auto max-w-[200px]"
+              />
+            </Link>
+          </div>
+          <div className="hidden lg:flex basis-1/3 justify-start gap-6 items-center">
+            {rightMenus.map((menu) => (
+              <DesktopMenu key={menu.name} menu={menu} />
+            ))}
+            <SocialLinks />
+          </div>
+          <div className="lg:hidden">
+            <MobMenu Menus={Menus} />
+          </div>
         </div>
       </nav>
     </header>

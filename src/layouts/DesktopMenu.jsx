@@ -29,7 +29,7 @@ export default function DesktopMenu({ menu }) {
       onHoverEnd={() => setIsHovering(false)}
     >
       {hasSubMenu ? (
-        <div className="flex items-center gap-1 cursor-pointer px-3 py-1 rounded hover:bg-white/10 text-accent">
+        <div className="flex items-center font-bold text-xl gap-1 cursor-pointer px-3 py-1 rounded hover:bg-white/10 text-accent">
           {menu.name}
           <ChevronDown
             className={`transition-transform duration-300 ${
@@ -40,7 +40,7 @@ export default function DesktopMenu({ menu }) {
       ) : (
         <Link
           to={menu.to}
-          className="flex items-center gap-1 px-3 py-1 rounded hover:bg-white/10 text-accent"
+          className="flex items-center font-bold text-xl gap-1 px-3 py-1 rounded hover:bg-white/10 text-accent"
         >
           {menu.name}
         </Link>

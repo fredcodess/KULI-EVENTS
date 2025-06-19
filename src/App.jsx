@@ -8,6 +8,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import BookingFormPage from "./pages/BookingFormPage";
 import ContactUsPage from "./pages/ContactUsPage";
+import AboutPage from "./pages/AboutPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route index element={<HomePage />} />
       <Route path="bookingform" element={<BookingFormPage />} />
       <Route path="contact" element={<ContactUsPage />} />
+      <Route path="about-us" element={<AboutPage />} />
     </Route>
   )
 );

@@ -12,9 +12,9 @@ const Menus = [
     ],
     gridCols: 3,
   },
-  { name: "Contact Us", to: "/contact" },
-  { name: "About Us", to: "/aboutus" },
-  { name: "Booking Form", to: "/bookingform" },
+  { name: "Contact", to: "/contact" },
+  { name: "About", to: "/about-us" },
+  { name: "Book", to: "/bookingform" },
 ];
 
 export default Menus;
