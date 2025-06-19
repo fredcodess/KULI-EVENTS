@@ -18,7 +18,7 @@ const HomePage = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="text-3xl md:text-xl font-semibold leading-snug mb-6"
+            className="text-xl md:text-xl font-semibold leading-snug mb-6"
           >
             Event hire and decor company dedicated to making your events extra
             special.
